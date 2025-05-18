@@ -1,21 +1,27 @@
 package com.javaproacademy.adminpanel.ui.forms;
 
-import com.javaproacademy.adminpanel.ui.FDOs.UserRecord;
+import com.javaproacademy.adminpanel.ui.FDOs.User;
+import com.javaproacademy.adminpanel.ui.services.UserService;
 import com.vaadin.flow.component.Composite;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.validator.StringLengthValidator;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 
 public class SigninForm extends Composite<FormLayout> {
 
+    private final Binder<User> binder;
+    private @Nullable User formDataObject;
     public SigninForm(){
 
-        Binder<UserRecord> binder = new Binder<>(UserRecord.class);
         TextField name = new TextField("Full name");
 
         EmailField emailField = new EmailField("Email address");
@@ -30,6 +36,12 @@ public class SigninForm extends Composite<FormLayout> {
         passwordField.setValue("Ex@mplePassw0rd");
 
         Button button = new Button("Sign in");
+        button.addClickListener(click->{
+            getFormDataObject().ifPresent(user ->{
+                User savedUser =new UserService().createUser(user);
+                Notification.show("created user: "+ savedUser.getName());
+            });
+        });
 
         //configure
         var formLayout = getContent();
@@ -37,14 +49,30 @@ public class SigninForm extends Composite<FormLayout> {
         formLayout.setHeight("500px");
         formLayout.add(name, emailField, passwordField, button);
 
+        //binding work
+        binder = new Binder<>();
         binder.forField(name)
-                .asRequired()
-                .withValidator(new StringLengthValidator("name must be between 1 and 100 characters", 1, 100))
-                .bind(UserRecord::name, null);
+                .asRequired("name can not be empty")
+                .bind(User::getName, User::setName);
         binder.forField(emailField)
-                .asRequired("Email can not be empty")
-                .bind(UserRecord::email, null);
+                .asRequired("email can not be empty")
+                .bind(User::getEmail, User::setEmail);
         binder.forField(passwordField)
-                .bind(UserRecord::password, null);
+                .bind(User::getPassword, User::setPassword);
+
+    }
+    //write-through mode
+    public void setFormDataObject(@Nullable User formDataObject){
+        binder.setBean(formDataObject);
+    }
+    public Optional<User> getFormDataObject() {
+        if (binder.getBean() == null) {
+            binder.setBean(new User());
+        }
+        if (binder.validate().isOk()) {
+            return Optional.of(binder.getBean());
+        } else {
+            return Optional.empty();
+        }
     }
 }

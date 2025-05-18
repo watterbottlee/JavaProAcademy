@@ -14,5 +14,4 @@ public class SigninView extends VerticalLayout {
         SigninForm signinForm = new SigninForm();
         add(signinForm);
     }
-
 }
