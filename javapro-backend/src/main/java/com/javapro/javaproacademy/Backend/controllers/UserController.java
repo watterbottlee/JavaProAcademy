@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.javapro.javaproacademy.Backend.payloads.ApiResponse;
 import com.javapro.javaproacademy.Backend.payloads.UserDto;
@@ -20,7 +21,7 @@ import com.javapro.javaproacademy.Backend.services.UserService;
 
 import jakarta.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping("/api/users")
 public class UserController {
 	
@@ -28,7 +29,7 @@ public class UserController {
 	private UserService userService;
 	
 	//create user
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto createUserDto = this.userService.createUser(userDto);
 		return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);

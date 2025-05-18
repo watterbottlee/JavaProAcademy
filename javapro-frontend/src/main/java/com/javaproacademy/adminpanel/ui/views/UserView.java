@@ -28,6 +28,7 @@ public class UserView extends VerticalLayout {
             e.printStackTrace();
             // handle error (show notification, etc.)
         }
+
     }
 
     public List<UserDto> fetchUsers() throws Exception {
