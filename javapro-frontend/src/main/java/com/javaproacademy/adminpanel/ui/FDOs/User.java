@@ -14,6 +14,8 @@ import javax.annotation.Nullable;
 @AllArgsConstructor
 public class User{
 
+    @Nullable
+    private Integer id;
     private String name;
     private String email;
     private String password;
