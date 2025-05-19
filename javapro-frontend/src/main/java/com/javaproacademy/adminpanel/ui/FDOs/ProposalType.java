@@ -1,4 +1,4 @@
-package com.javaproacademy.adminpanel.ui.forms;
+package com.javaproacademy.adminpanel.ui.FDOs;
 
 public enum ProposalType {
     RESEARCH,

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javapro.javaproacademy.Backend.payloads.ApiResponse;
+import com.javapro.javaproacademy.Backend.payloads.LoginDto;
+import com.javapro.javaproacademy.Backend.payloads.LoginResponse;
 import com.javapro.javaproacademy.Backend.payloads.UserDto;
 import com.javapro.javaproacademy.Backend.services.UserService;
 
@@ -34,7 +36,6 @@ public class UserController {
 		UserDto createUserDto = this.userService.createUser(userDto);
 		return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
 	}
-
 	//update user
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> updateUser(
@@ -54,11 +55,21 @@ public class UserController {
 		UserDto gotUser = this.userService.getUserById(uid);
 		return new ResponseEntity<>(gotUser, HttpStatus.OK);
 	}
+	@GetMapping("/getuserbyemail")
+	public ResponseEntity<UserDto> getUserByEmail(@RequestParam("email") String emailid){
+		UserDto userWithEmail = this.userService.getUserByEmail(emailid);
+		return new ResponseEntity<>(userWithEmail, HttpStatus.OK);	
+	}
 	//get all users
 	@GetMapping("/getallusers")
 	public ResponseEntity<List<UserDto>> getAllUsers(){
 		List<UserDto> allUsers = this.userService.getAllUsers();
 		return new ResponseEntity<>(allUsers, HttpStatus.OK);
 	}
-
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto){
+		LoginResponse response = this.userService.getUserByEmailPass(loginDto);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }
+

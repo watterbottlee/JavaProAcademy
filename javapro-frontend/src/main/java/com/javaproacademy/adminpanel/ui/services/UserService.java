@@ -12,9 +12,14 @@ public class UserService {
     private final RestTemplate restTemplate= new RestTemplate();
     private final String CREATE_USER_API="http://localhost:8080/api/users";
     private final String GET_USERS_API="http://localhost:8080/api/users/getallusers";
+    private final String GET_USER_BY_EMAIL="http://localhost:8080/api/users/getuserbyemail?email=";
 
     public User createUser(User user){
         return restTemplate.postForObject(CREATE_USER_API, user, User.class);
+    }
+    public User getUserByEmail(String emailId){
+        String url = GET_USER_BY_EMAIL+emailId;
+        return restTemplate.getForObject(url,User.class);
     }
     public List<User> getAllUsers() {
         ResponseEntity<List<User>> response = restTemplate.exchange(

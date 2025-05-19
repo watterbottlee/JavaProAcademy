@@ -6,6 +6,7 @@ import com.vaadin.flow.component.Composite;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -16,11 +17,11 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 
-public class SigninForm extends Composite<FormLayout> {
+public class SignupForm extends Composite<FormLayout> {
 
     private final Binder<User> binder;
     private @Nullable User formDataObject;
-    public SigninForm(){
+    public SignupForm(){
 
         TextField name = new TextField("Full name");
 
@@ -35,7 +36,7 @@ public class SigninForm extends Composite<FormLayout> {
         passwordField.setLabel("Password");
         passwordField.setValue("Ex@mplePassw0rd");
 
-        Button button = new Button("Sign in");
+        Button button = new Button("Sign up");
         button.addClickListener(click->{
             getFormDataObject().ifPresent(user ->{
                 User savedUser =new UserService().createUser(user);
@@ -43,11 +44,19 @@ public class SigninForm extends Composite<FormLayout> {
             });
         });
 
+
         //configure
+        Span heading = new Span("Sign up");
+        heading.setWidthFull();
+        heading.getStyle().set("text-align", "center")
+                .set("font-size", "24px")
+                .set("font-weight", "bold")
+                .set("margin-bottom", "20px");
         var formLayout = getContent();
         formLayout.setWidth("400px");
         formLayout.setHeight("500px");
-        formLayout.add(name, emailField, passwordField, button);
+        formLayout.add(heading, name, emailField, passwordField, button);
+        formLayout.getStyle().set("border", "2px solid black");
 
         //binding work
         binder = new Binder<>();

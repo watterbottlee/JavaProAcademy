@@ -9,8 +9,12 @@ import com.vaadin.flow.router.Route;
 public class MainView extends Main {
     public MainView(){
         setText("this is the home page");
-        Button button = new Button("see users");
-        add(button);
-        button.addClickListener(event ->  UI.getCurrent().navigate(UserView.class));
+        Button seeUsers = new Button("see users");
+        Button signUp = new Button("Sign up");
+        add(seeUsers);
+        add(signUp);
+        seeUsers.addClickListener(event ->  UI.getCurrent().navigate(UserView.class));
+        signUp.addClickListener(e-> UI.getCurrent().navigate(SignupView.class));
+
     }
 }

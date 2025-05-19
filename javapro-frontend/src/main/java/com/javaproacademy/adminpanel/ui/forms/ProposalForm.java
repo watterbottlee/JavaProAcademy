@@ -1,5 +1,6 @@
 package com.javaproacademy.adminpanel.ui.forms;
 
+import com.javaproacademy.adminpanel.ui.FDOs.ProposalType;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;

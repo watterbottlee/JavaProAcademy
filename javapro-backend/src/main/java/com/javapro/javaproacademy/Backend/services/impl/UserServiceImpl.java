@@ -1,6 +1,7 @@
 package com.javapro.javaproacademy.Backend.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -9,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.javapro.javaproacademy.Backend.entities.User;
 import com.javapro.javaproacademy.Backend.exceptions.ResourceNotFoundException;
+import com.javapro.javaproacademy.Backend.payloads.LoginDto;
+import com.javapro.javaproacademy.Backend.payloads.LoginResponse;
 import com.javapro.javaproacademy.Backend.payloads.UserDto;
 import com.javapro.javaproacademy.Backend.repositories.UserRepo;
 import com.javapro.javaproacademy.Backend.services.UserService;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,7 +55,14 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(()-> new ResourceNotFoundException("user","id",userId));
 		return this.userToDto(user);
 	}
-
+	
+	@Override
+	public UserDto getUserByEmail(String email) {
+		User user = this.userRepo.findByEmail(email)
+				.orElseThrow(()-> new ResourceNotFoundException("user", "email", email));
+		return this.userToDto(user);
+	}
+	
 	@Override
 	public List<UserDto> getAllUsers() {
 		List<User> users = this.userRepo.findAll();
@@ -74,4 +85,20 @@ public class UserServiceImpl implements UserService {
 		UserDto userDto = this.modelMapper.map(user, UserDto.class);
 		return userDto;
 	}
+
+	
+	@Override
+	public LoginResponse getUserByEmailPass(LoginDto logindto) {
+		String email = logindto.getEmail();
+		String password = logindto.getPassword();
+		Optional<User> user = this.userRepo.findByEmail(email);
+		if(user.isEmpty()) {
+			return new LoginResponse("User does not exist",false);
+		}else {
+			if(user.get().getPassword().equals(password)) {
+				return new LoginResponse("login successfull", true);
+			}return new LoginResponse("Wrong password",false);
+		}
+	}
+
 }
