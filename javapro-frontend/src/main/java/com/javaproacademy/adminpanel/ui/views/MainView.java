@@ -2,19 +2,26 @@ package com.javaproacademy.adminpanel.ui.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
-@Route("")
-public class MainView extends Main {
+@Route("home")
+@RouteAlias("")
+public class MainView extends VerticalLayout {
     public MainView(){
-        setText("this is the home page");
-        Button seeUsers = new Button("see users");
+        String text = "this is the home page";
+        Button logIn = new Button("Log in");
         Button signUp = new Button("Sign up");
-        add(seeUsers);
+        Button seeUsers = new Button("see users");
+        add(text);
+        add(logIn);
         add(signUp);
-        seeUsers.addClickListener(event ->  UI.getCurrent().navigate(UserView.class));
+        add(seeUsers);
+
+        logIn.addClickListener(e->UI.getCurrent().navigate(LoginView.class));
         signUp.addClickListener(e-> UI.getCurrent().navigate(SignupView.class));
+        seeUsers.addClickListener(event ->  UI.getCurrent().navigate(UserView.class));
 
     }
 }

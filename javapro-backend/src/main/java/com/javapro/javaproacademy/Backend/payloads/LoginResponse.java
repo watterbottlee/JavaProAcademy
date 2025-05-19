@@ -1,5 +1,6 @@
 package com.javapro.javaproacademy.Backend.payloads;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,7 @@ public class LoginResponse {
 	
 	private String message;
 	private boolean status;
+	@Nullable
+	private String name;
 
 }

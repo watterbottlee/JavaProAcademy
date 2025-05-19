@@ -24,17 +24,18 @@ public class SignupForm extends Composite<FormLayout> {
     public SignupForm(){
 
         TextField name = new TextField("Full name");
+        name.setValue("john doe");
 
         EmailField emailField = new EmailField("Email address");
         emailField.setLabel("Email address");
         emailField.getElement().setAttribute("name", "email");
-        emailField.setValue("julia.scheider@email.com");
+        emailField.setValue("jogn@email.com");
         emailField.setErrorMessage("Enter a valid email address");
         emailField.setClearButtonVisible(true);
 
         PasswordField passwordField = new PasswordField("Password");
         passwordField.setLabel("Password");
-        passwordField.setValue("Ex@mplePassw0rd");
+        passwordField.setValue("Ex@12#abc");
 
         Button button = new Button("Sign up");
         button.addClickListener(click->{
@@ -71,9 +72,9 @@ public class SignupForm extends Composite<FormLayout> {
 
     }
     //write-through mode
-    public void setFormDataObject(@Nullable User formDataObject){
-        binder.setBean(formDataObject);
-    }
+    //    public void setFormDataObject(@Nullable User formDataObject){
+    //        binder.setBean(formDataObject);
+    //    }
     public Optional<User> getFormDataObject() {
         if (binder.getBean() == null) {
             binder.setBean(new User());
@@ -84,4 +85,5 @@ public class SignupForm extends Composite<FormLayout> {
             return Optional.empty();
         }
     }
+
 }

@@ -93,11 +93,11 @@ public class UserServiceImpl implements UserService {
 		String password = logindto.getPassword();
 		Optional<User> user = this.userRepo.findByEmail(email);
 		if(user.isEmpty()) {
-			return new LoginResponse("User does not exist",false);
+			return new LoginResponse("User does not exist",false,null);
 		}else {
 			if(user.get().getPassword().equals(password)) {
-				return new LoginResponse("login successfull", true);
-			}return new LoginResponse("Wrong password",false);
+				return new LoginResponse("login successfull", true, user.get().getName());
+			}return new LoginResponse("Wrong password",false, null);
 		}
 	}
 
