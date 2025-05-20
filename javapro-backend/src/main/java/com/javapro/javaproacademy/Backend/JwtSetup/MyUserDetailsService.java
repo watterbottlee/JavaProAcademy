@@ -9,20 +9,24 @@ import org.springframework.stereotype.Service;
 import com.javapro.javaproacademy.Backend.entities.User;
 import com.javapro.javaproacademy.Backend.repositories.UserRepo;
 
+import java.util.Optional;
+
 @Service
-public class MyUserDetailsService implements UserDetailsService{
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Since we're using email for authentication, load user by email
+        Optional<User> userOptional = userRepo.findByEmail(username);
 
-        User user = userRepo.findByName(username);
-        if (user==null) {
-            System.out.println("user not found");
-            throw new UsernameNotFoundException("user not found");
+        if (userOptional.isEmpty()) {
+            System.out.println("User not found with email: " + username);
+            throw new UsernameNotFoundException("User not found with email: " + username);
         }
-        return new UserPrincipal(user);
+
+        return new UserPrincipal(userOptional.get());
     }
 }

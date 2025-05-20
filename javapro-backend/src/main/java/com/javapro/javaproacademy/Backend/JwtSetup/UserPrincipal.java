@@ -28,17 +28,36 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getName();
-    }
-
-    public String getEmail(){
+        // For Spring Security, we'll use email as the username
         return user.getEmail();
     }
 
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    public String getName() {
+        return user.getName();
+    }
+
     // Implement other methods required by UserDetails interface
-    // For example:
     @Override
     public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
         return true;
     }
 }
