@@ -10,5 +10,6 @@ import com.javapro.javaproacademy.Backend.payloads.ApiResponse;
 public interface UserRepo extends JpaRepository<User, Integer> {
 	
 	Optional<User> findByEmail(String email);
+	User findByName(String name);
 
 }

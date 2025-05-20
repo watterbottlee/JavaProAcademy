@@ -14,7 +14,14 @@ public class LoginResponse {
 	
 	private String message;
 	private boolean status;
+
+	@Nullable
+	private String jwtToken;
+	@Nullable
+	private Integer id;
 	@Nullable
 	private String name;
+	@Nullable
+	private String email;
 
 }

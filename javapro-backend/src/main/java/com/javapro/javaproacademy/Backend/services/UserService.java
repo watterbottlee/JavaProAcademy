@@ -12,7 +12,7 @@ public interface UserService{
 	UserDto updateUser(UserDto userDto, Integer userId);
 	UserDto getUserById(Integer userId);
 	UserDto getUserByEmail(String email);
-	LoginResponse getUserByEmailPass(LoginDto loginDto);
+	LoginResponse verifyUser(LoginDto loginDto);
 	void deleteUser(Integer userId);
 	List<UserDto> getAllUsers();
 }

@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.javapro.javaproacademy.Backend.JwtSetup.JWTService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.javapro.javaproacademy.Backend.entities.User;
@@ -24,6 +28,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private AuthenticationManager authManager;
+
+	@Autowired
+	private JWTService jwtService;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -88,16 +98,34 @@ public class UserServiceImpl implements UserService {
 
 	
 	@Override
-	public LoginResponse getUserByEmailPass(LoginDto logindto) {
-		String email = logindto.getEmail();
-		String password = logindto.getPassword();
+	public LoginResponse verifyUser(LoginDto logindto) {
+		String email= logindto.getEmail();
+		String password= logindto.getPassword();
 		Optional<User> user = this.userRepo.findByEmail(email);
 		if(user.isEmpty()) {
-			return new LoginResponse("User does not exist",false,null);
+			return new LoginResponse("User does not exist",false,null,null,null,null);
 		}else {
 			if(user.get().getPassword().equals(password)) {
-				return new LoginResponse("login successfull", true, user.get().getName());
-			}return new LoginResponse("Wrong password",false, null);
+				Authentication authentication = authManager.authenticate(
+						new UsernamePasswordAuthenticationToken(logindto.getEmail(), logindto.getPassword()));
+				if(authentication.isAuthenticated()) {
+					String jwtToken = jwtService.generateToken(logindto.getEmail());
+					return new LoginResponse(
+							"login successfull",
+							true,
+							jwtToken,
+							user.get().getId(),
+							user.get().getName(),
+							user.get().getEmail());
+				};
+			}
+			return new LoginResponse(
+					"Wrong password",
+					false,
+					null,
+					null,
+					null,
+					null);
 		}
 	}
 
